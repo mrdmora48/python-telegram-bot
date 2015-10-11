@@ -2,6 +2,8 @@ Python Telegram Bot
 
 A Python wrapper around the Telegram Bot API.
 
+*Stay tuned for library updates and new releases on our* `Telegram Channel <http://telegram.me/pythontelegrambotchannel>`_.
+
 By `Leandro Toledo <leandrotoledodesouza@gmail.com>`_
 
 .. image:: https://img.shields.io/pypi/v/python-telegram-bot.svg
@@ -94,6 +96,7 @@ sendLocation              Yes
 sendChatAction            Yes
 getUpdates                Yes
 getUserProfilePhotos      Yes
+getFile                   Yes
 setWebhook                Yes
 ========================= ============
 
@@ -189,6 +192,10 @@ To post a text message::
 
     >>> bot.sendMessage(chat_id=chat_id, text="I'm sorry Dave I'm afraid I can't do that.")
 
+To post a text message with markdown::
+
+    >>> bot.sendMessage(chat_id=chat_id, text="*bold* _italic_ [link](http://google.com).", parse_mode=telegram.ParseMode.MARKDOWN)
+
 To post an Emoji (special thanks to `Tim Whitlock <http://apps.timwhitlock.info/emoji/tables/unicode>`_)::
 
     >>> bot.sendMessage(chat_id=chat_id, text=telegram.Emoji.PILE_OF_POO)
@@ -215,6 +222,12 @@ To hide `Custom Keyboards <https://core.telegram.org/bots#keyboards>`_::
 
     >>> reply_markup = telegram.ReplyKeyboardHide()
     >>> bot.sendMessage(chat_id=chat_id, text="I'm back.", reply_markup=reply_markup)
+
+To download a file (you will need its file_id)::
+
+    >>> file_id = message.voice.file_id
+    >>> newFile = bot.getFile(file_id)
+    >>> newFile.download('voice.ogg')
 
 There are many more API methods, to read the full API documentation::
 
@@ -264,7 +277,7 @@ You may copy, distribute and modify the software provided that modifications are
 _`Contact`
 ==========
 
-Feel free to join to our `Telegram group <https://telegram.me/joinchat/00b9c0f802509b946b2e8e98b73e19be>`_.
+Feel free to join to our `Telegram group <https://telegram.me/joinchat/ALnA-AJQm5SEwuAzar3nvw>`_.
 
 If you face trouble joining in the group please ping me `via Telegram <https://telegram.me/leandrotoledo>`_, I'll be glad to add you.
 

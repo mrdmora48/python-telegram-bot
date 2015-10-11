@@ -16,44 +16,40 @@
 # You should have received a copy of the GNU Lesser Public License
 # along with this program.  If not, see [http://www.gnu.org/licenses/].
 
-"""This module contains a object that represents a Telegram Sticker"""
+"""This module contains a object that represents a Telegram File"""
 
-from telegram import PhotoSize, TelegramObject
+from os.path import basename
+
+from telegram import TelegramObject
+from telegram.utils.request import download as _download
 
 
-class Sticker(TelegramObject):
-    """This object represents a Telegram Sticker.
+class File(TelegramObject):
+
+    """This object represents a Telegram File.
 
     Attributes:
         file_id (str):
-        width (int):
-        height (int):
-        thumb (:class:`telegram.PhotoSize`):
-        file_size (int):
+        file_size (str):
+        file_path (str):
 
     Args:
         file_id (str):
-        width (int):
-        height (int):
         **kwargs: Arbitrary keyword arguments.
 
     Keyword Args:
-        thumb (Optional[:class:`telegram.PhotoSize`]):
         file_size (Optional[int]):
+        file_path (Optional[str]):
     """
 
     def __init__(self,
                  file_id,
-                 width,
-                 height,
                  **kwargs):
         # Required
         self.file_id = str(file_id)
-        self.width = int(width)
-        self.height = int(height)
         # Optionals
-        self.thumb = kwargs.get('thumb')
         self.file_size = int(kwargs.get('file_size', 0))
+        self.file_path = str(kwargs.get('file_path', ''))
 
     @staticmethod
     def de_json(data):
@@ -62,11 +58,24 @@ class Sticker(TelegramObject):
             data (str):
 
         Returns:
-            telegram.Sticker:
+            telegram.File:
         """
         if not data:
             return None
 
-        data['thumb'] = PhotoSize.de_json(data.get('thumb'))
+        return File(**data)
 
-        return Sticker(**data)
+    def download(self,
+                 custom_path=None):
+        """
+        Args:
+            custom_path (str):
+        """
+        url = self.file_path
+
+        if custom_path:
+            filename = basename(custom_path)
+        else:
+            filename = basename(url)
+
+        _download(url, filename)
